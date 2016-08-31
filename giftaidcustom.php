@@ -32,7 +32,7 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
     }
 
     // HRMC seems to reject amounts of less that 1ct
-    if ($contribution_data->amount < 0.01) {
+    if ($contribution_data->total_amount < 0.01) {
       $isEligible = FALSE;
       CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "Donation is less than 1ct");
       return;
