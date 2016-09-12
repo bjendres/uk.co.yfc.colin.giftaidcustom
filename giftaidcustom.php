@@ -19,10 +19,21 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
   // we will only further restrict eligibility, if not eligible to begin with we do nothing
   if ($isEligible) {
     // LOAD contribution
-    $contribution_query = "SELECT payment_instrument_id, total_amount, receive_date FROM civicrm_contribution WHERE id = %1";
+    $contribution_query = "
+      SELECT payment_instrument_id, total_amount, receive_date, eligible_for_gift_aid
+      FROM civicrm_contribution
+      LEFT JOIN civicrm_value_gift_aid_submission ON entity_id = civicrm_contribution.id
+      WHERE id = %1";
     $contribution_spec = array(1 => array($contributionId, 'Integer'));
     $contribution_data = CRM_Core_DAO::executeQuery($contribution_query, $contribution_spec);
     $contribution_data->fetch();
+
+    // check the "Eligible for Gift Aid?" label
+    if ($contribution_data->eligible_for_gift_aid != 1 && $contribution_data->eligible_for_gift_aid != 3) {
+      $isEligible = FALSE;
+      CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "Contribution is not marked as 'eligible'.");
+      return;
+    }
 
     // exclude Stewardship payments
     if ($contribution_data->payment_instrument_id == 18) {
