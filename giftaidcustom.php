@@ -116,15 +116,6 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
         return;      
       }
     }
-    
-    // GAD Source Unclear
-    if ($declaration['source']==''||is_null($declaration['source'])) {
-      $isEligible = FALSE;
-      CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "GAD Source Unclear");
-      return;      
-    }
-    
-    
   }
 }
 
