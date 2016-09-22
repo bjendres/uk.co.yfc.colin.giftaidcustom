@@ -65,6 +65,14 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
       }
     }
     
+    // Add filter for contact containing ' & ' or ' and '
+    if (strpos($contact_data->first_name, ' & ') || strpos($contact_data->first_name, ' and ')) {
+      $isEligible = FALSE;
+      CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "Possible joint record");
+      return;
+    }
+    
+    
     // check if contact is deleted
     if (!empty($contact_data->is_deleted)) {
       $isEligible = FALSE;
