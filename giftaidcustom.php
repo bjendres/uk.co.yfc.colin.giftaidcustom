@@ -107,6 +107,7 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
     }
     
     // Check if scanned declaration is present for written GAD sources
+    $writtenarray = array('Electronic','Electronic (Online Donation)','Gift Aid (Verbal)','Verbal','Oral','Gift Aid Declaration Webform','Online');
     if (is_null($declaration['scanned_declaration'])) {
       if(!(in_array($declaration['source'],$writtenarray))){
         $isEligible = FALSE;
