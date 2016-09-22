@@ -29,7 +29,7 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
     $contribution_data->fetch();
 
     // check the "Eligible for Gift Aid?" label
-    if ($contribution_data->eligible_for_gift_aid != 1 && $contribution_data->eligible_for_gift_aid != 3) {
+    if ($contribution_data->eligible_for_gift_aid == 0 && $contribution_data->eligible_for_gift_aid != 3 && $contribution_data->eligible_for_gift_aid != null) {
       $isEligible = FALSE;
       CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "Contribution is not marked as 'eligible'.");
       return;
