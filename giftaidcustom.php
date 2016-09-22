@@ -105,6 +105,15 @@ function giftaidcustom_civicrm_giftAidEligible(&$isEligible, $contactId, $date, 
       CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "Invalid postal code");
       return;      
     }
+    
+    // Check if scanned declaration is present for written GAD sources
+    if (is_null($declaration['scanned_declaration'])) {
+      if(!(in_array($declaration['source'],$writtenarray))){
+        $isEligible = FALSE;
+        CRM_Civigiftaid_Utils_Rejection::setRejectionReason($contributionId, "No Scanned GAD where expected");
+        return;      
+      }
+    }
   }
 }
 
